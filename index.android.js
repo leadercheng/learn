@@ -11,7 +11,7 @@ import {
   Text,
   View
 } from 'react-native';
-//import StopWatch from './stopWatch.js';
+import StopWatch from './stopWatch.js';
 import Weather from "./weather";
 
 export default class learn extends Component {
@@ -19,7 +19,7 @@ export default class learn extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Welcome Lidong !
         </Text>
         <Text style={styles.instructions}>
           To get started, edit index.android.js
