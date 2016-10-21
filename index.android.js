@@ -11,7 +11,8 @@ import {
   Text,
   View
 } from 'react-native';
-import StopWatch from './stopWatch.js';
+//import StopWatch from './stopWatch.js';
+import Weather from "./weather";
 
 export default class learn extends Component {
   render() {
@@ -51,4 +52,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('learn', () => StopWatch);
+AppRegistry.registerComponent('learn', () => Weather);
