@@ -45,6 +45,7 @@ class CityWeather extends Component {
       <ScrollView style={styles.cityWeather}>
         <CitySection data={this.props.data} />
         <TodaySection data={this.props.data} />
+        <WeekSection data={this.props.data} />
       </ScrollView>
     );
   }
@@ -72,7 +73,7 @@ class TodaySection extends Component {
 
   render() {
     return (
-      <View style={styles.withinDay}>
+      <View style={styles.today}>
         <TodayInfo data={this.props.data} />
         <HourSection data={this.props.data} />
       </View>
@@ -135,9 +136,40 @@ class HourSection extends Component {
   }
 }
 
+class WeekSection extends Component {
+  static propTypes = {
+    data: React.PropTypes.object.isRequired,
+  };
+
+  render() {
+    const weekDayInfo = this.props.data.days.map((dayData, dayIndex) => {
+      return (
+        <View key={dayData.key} style={styles.weekDayInfo}>
+          <View style={styles.weekDayName}>
+            <Text style={styles.text}>{dayData.day}</Text>
+          </View>
+          <View style={styles.weekDayIcon}>
+            <Icon name={dayData.icon} style={{ color: "#fff" }} size={25}></Icon>
+          </View>
+          <View style={styles.weekDayDegree}>
+            <Text style={styles.weekDaydegreeHigh}>{dayData.high}</Text>
+            <Text style={dayData.night ? styles.weekDayDegreeNight : styles.weekDayDegreeLow}>{dayData.low}</Text>
+          </View>
+        </View>
+      );
+    });
+    return (
+      <View>
+        {weekDayInfo}
+      </View>
+    );
+  }
+}
+
+
 const styles = StyleSheet.create({
   text: {
-    fontSize: 15,
+    fontSize: 18,
     color: "#fff",
   },
   container: {
@@ -161,65 +193,109 @@ const styles = StyleSheet.create({
     //justifyContent: "space-around",
   },
   city: {
-    fontSize: 25,
+    fontSize: 55,
     color: "#fff",
     // paddingBottom: 5,
     //backgroundColor:"red"
   },
   abs: {
-    fontSize: 15,
+    fontSize: 25,
     color: "#fff",
     //backgroundColor:"transparent"
   },
   degree: {
     fontSize: 85,
     color: "#fff",
-    // fontWeight: "100",
+  },
+  today: {
+    marginTop: 20,
+    marginBottom: 20,
   },
   todayInfo: {
     flexDirection: "row",
+    padding: 10,
   },
   todayInfoHead: {
     flex: 1,
     flexDirection: "row",
     justifyContent: 'flex-start',
-    paddingLeft: 10,
   },
   todayInfoTail: {
     flex: 1,
     flexDirection: "row",
     justifyContent: 'flex-end',
-    paddingRight: 10,
   },
   todayInfoText: {
-    fontSize: 15,
+    fontSize: 18,
     color: "#fff",
-    width: 50,
+    width: 60,
   },
   todayInfoDayHigh: {
-    fontSize: 16,
+    fontSize: 18,
     color: "#fff",
     width: 30,
   },
   todayInfoDayLow: {
-    fontSize: 16,
+    fontSize: 18,
     color: "#eee",
     width: 30,
   },
   todayInfoNightLow: {
-    fontSize: 16,
+    fontSize: 18,
     color: "#ccc",
     width: 30,
   },
   hourSection: {
-    padding: 10,
+    padding: 20,
     flexDirection: "row",
-    borderWidth: 1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
     borderColor: "#fff",
   },
   hourInfo: {
-    width: 55,
+    width: 60,
+    alignItems: "center"
   },
+  weekDayInfo: {
+    flexDirection: "row",
+    height: 38
+  },
+  weekDayName: {
+    justifyContent: "center",
+    alignItems: "flex-start",
+    flex: 1,
+  },
+  weekDayIcon: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
+  weekDayDegree: {
+    justifyContent: "flex-end",
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "row",
+    paddingRight: 25,
+  },
+  weekDaydegreeHigh: {
+    color: "#fff",
+    width: 35,
+    fontSize: 18,
+    textAlign: "right"
+  },
+  weekDayDegreeLow:{
+    color:"#eee",
+    width:35,
+    fontSize:18,
+    textAlign:"right"
+  },
+  weekDayDegreeNight:{
+    color:"#aaa",
+    width:35,
+    fontSize:18,
+    textAlign:"right"
+  },
+
 
 });
 
