@@ -9,6 +9,7 @@ import {
   View,
   StyleSheet
 } from "react-native";
+import styled from 'styled-components/native';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -53,12 +54,20 @@ class CityWeather extends Component {
     data: React.PropTypes.object.isRequired,
   }
   render() {
+    const CitySectionView = styled.View`
+      backgroundColor: transparent;
+      alignItems: center;
+    `;
+    const CityText = styled.Text`
+    fontSize: 55;
+    color: #fff;
+    `;
     const CitySection = () => (
-      <View style={styles.citySection}>
-        <Text style={styles.city}>{this.props.data.city}</Text>
+      <CitySectionView>
+        <CityText>{this.props.data.city}</CityText>
         <Text style={styles.abs}>{this.props.data.abs}</Text>
         <Text style={styles.degree}>{this.props.data.degree}°</Text>
-      </View>
+      </CitySectionView>
     );
     const TodaySection = () => (
       <View style={styles.todaySection}>
@@ -96,7 +105,7 @@ class CityWeather extends Component {
         </View>
       );
     });
-    const WeekSection = ()=> (
+    const WeekSection = () => (
       <View style={styles.weekSection}>
         {weekDay}
       </View>
@@ -108,7 +117,7 @@ class CityWeather extends Component {
             <Text style={styles.text}>{dayData.day}</Text>
           </View>
           <View style={styles.weekDayIcon}>
-            <Icon name={dayData.icon} size={25} style={{color:'#fff'}}></Icon>
+            <Icon name={dayData.icon} size={25} style={{ color: '#fff' }}></Icon>
           </View>
           <View style={styles.weekDayDegree}>
             <Text style={styles.weekDaydegreeHigh}>{dayData.high}</Text>
@@ -117,14 +126,21 @@ class CityWeather extends Component {
         </View>
       );
     });
-
+    const CityWeather = styled.ScrollView`
+    backgroundColor: transparent;
+    position: absolute;
+    left: 0;
+    top: 10;
+    width: ${Dimensions.get('window').width};
+    height: ${Dimensions.get('window').height - 60};
+    `;
     return (
-      <ScrollView style={styles.cityWeather}>
+      <CityWeather>
         <CitySection />
         <TodaySection />
         <HourSection />
         <WeekSection />
-      </ScrollView>
+      </CityWeather>
     );
   }
 }
@@ -147,22 +163,16 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height - 60,
   },
   citySection: {
-    //paddingTop:70,
-    //paddingBottom:60,
     backgroundColor: "transparent",
     alignItems: "center",
-    //justifyContent: "space-around",
   },
   city: {
     fontSize: 55,
     color: "#fff",
-    // paddingBottom: 5,
-    //backgroundColor:"red"
   },
   abs: {
     fontSize: 25,
     color: "#fff",
-    //backgroundColor:"transparent"
   },
   degree: {
     fontSize: 85,
@@ -186,7 +196,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   hourSection: {
-    flexDirection: "row",    
+    flexDirection: "row",
     paddingTop: 25,
     paddingBottom: 25,
     borderTopWidth: 1,
@@ -244,7 +254,5 @@ const styles = StyleSheet.create({
     right: 25,
     bottom: 0
   },
-
-
 });
 

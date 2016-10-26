@@ -10,7 +10,8 @@
     "react": "15.3.2",
     "react-native": "0.36.0",
     "react-native-swiper": "^1.5.2",
-    "react-native-vector-icons": "^2.1.0"
+    "react-native-vector-icons": "^2.1.0",
+    "styled-components": "^1.0.8"
   },
   "jest": {
     "preset": "jest-react-native"
