@@ -29,11 +29,12 @@ export default class Weather extends Component {
 
   render() {
     const citySlides = this.state.weatherData.map((cityData, index) => {
+      const Container =styled.View`flex: 1;  alignItems: stretch`;
       return (
-        <View key={cityData.key} style={styles.container}>
+        <Container key={cityData.key}>
           <Image source={cityData.bg}></Image>
           <CityWeather data={cityData} />
-        </View>
+        </Container>
       );
     });
     return (
@@ -41,7 +42,7 @@ export default class Weather extends Component {
         <Swiper>
           {citySlides}
         </Swiper>
-        <TouchableHighlight onPress={() => this._back()} style={styles.backBtn}>
+        <TouchableHighlight onPress={() => this._back()} style={{position: "absolute", right: 25, bottom: 0}}>
           <Icon size={25} name="ios-list-outline" style={{ color: "#fff" }}></Icon>
         </TouchableHighlight>
       </View>
@@ -54,79 +55,121 @@ class CityWeather extends Component {
     data: React.PropTypes.object.isRequired,
   }
   render() {
-    const CitySectionView = styled.View`
-      backgroundColor: transparent;
-      alignItems: center;
-    `;
-    const CityText = styled.Text`
-    fontSize: 55;
-    color: #fff;
-    `;
-    const CitySection = () => (
-      <CitySectionView>
-        <CityText>{this.props.data.city}</CityText>
-        <Text style={styles.abs}>{this.props.data.abs}</Text>
-        <Text style={styles.degree}>{this.props.data.degree}°</Text>
-      </CitySectionView>
-    );
-    const TodaySection = () => (
-      <View style={styles.todaySection}>
-        <View style={styles.todayHead}>
-          <Text style={styles.text}>
-            {this.props.data.today.week}&nbsp;&nbsp;&nbsp;
-          </Text>
-          <Text style={styles.text}>
-            {this.props.data.today.day}
-          </Text>
-        </View>
-        <View style={styles.todayTail}>
-          <Text style={styles.text}>
-            {this.props.data.today.high}&nbsp;&nbsp;&nbsp;
-          </Text>
-          <Text style={this.props.data.night ? styles.text : styles.text}>
-            {this.props.data.today.low}
-          </Text>
-        </View>
-      </View>
-    );
-    const HourSection = () => (
-      <ScrollView horizontal={true}>
-        <View style={styles.hourSection}>
-          {hourInfo}
-        </View>
-      </ScrollView>
-    );
-    const hourInfo = this.props.data.hours.map((data, index) => {
+    const CitySection = () => {
+      const CitySectionView = styled.View`
+        backgroundColor: transparent;
+        alignItems: center;
+      `;
+      const CityText = styled.Text`
+      fontSize: 55;
+      color: #fff;
+      `;
+      const AbsText = styled.Text`
+      fontSize: 25;
+      color: #fff;
+      `;
+      const DegreeText = styled.Text`
+      fontSize: 85;
+      color: #fff;
+      `;
       return (
-        <View key={data.key} style={styles.hourInfo}>
-          <Text style={styles.text}>{data.time}</Text>
-          <Icon name={data.icon} size={25} style={[{ color: data.color }]} />
-          <Text style={styles.text}>{data.degree}</Text>
-        </View>
-      );
-    });
-    const WeekSection = () => (
-      <View style={styles.weekSection}>
-        {weekDay}
-      </View>
-    );
-    const weekDay = this.props.data.days.map((dayData, dayIndex) => {
+        <CitySectionView>
+          <CityText>{this.props.data.city}</CityText>
+          <AbsText>{this.props.data.abs}</AbsText>
+          <DegreeText>{this.props.data.degree}°</DegreeText>
+        </CitySectionView>
+      )
+    };
+    const TodaySection = () => {
+      const TodaySectionView = styled.View`
+      paddingLeft: 25;
+      paddingRight: 25;
+      marginTop: 10;
+      marginBottom: 10;
+      flexDirection: row;
+      `;
+      const TodayHeadView = styled.View`
+      flex: 1;
+      flexDirection: row;
+      justifyContent: flex-start;
+      `;
+      const TodayTailView = styled.View`
+      flex: 1;
+      flexDirection: row;
+      justifyContent: flex-end;
+      `;
+      const TodayLowText = styled.Text`
+      fontSize: 18;
+      color: ${this.props.data.night ? 'palevioletred' : 'white'};
+      `;
       return (
-        <View key={dayData.key} style={styles.weekDayInfo}>
-          <View style={styles.weekDayName}>
-            <Text style={styles.text}>{dayData.day}</Text>
-          </View>
-          <View style={styles.weekDayIcon}>
-            <Icon name={dayData.icon} size={25} style={{ color: '#fff' }}></Icon>
-          </View>
-          <View style={styles.weekDayDegree}>
-            <Text style={styles.weekDaydegreeHigh}>{dayData.high}</Text>
-            <Text style={dayData.night ? styles.weekDayDegreeNight : styles.weekDayDegreeLow}>{dayData.low}</Text>
-          </View>
-        </View>
+        <TodaySectionView>
+          <TodayHeadView>
+            <Text>{this.props.data.today.week}&nbsp;&nbsp;&nbsp;</Text>
+            <Text>{this.props.data.today.day}</Text>
+          </TodayHeadView>
+          <TodayTailView>
+            <Text>{this.props.data.today.high}&nbsp;&nbsp;&nbsp;</Text>
+            <Text style={{ color: this.props.data.night ? 'palevioletred' : 'white' }}>
+              {this.props.data.today.low}
+            </Text>
+          </TodayTailView>
+        </TodaySectionView>
       );
-    });
-    const CityWeather = styled.ScrollView`
+    };
+    const HourSection = () => {
+      const hours = this.props.data.hours.map((data, index) => {
+        const HourInfoView = styled.View`width: 60;alignItems: center;`;
+        return (
+          <HourInfoView key={data.key}>
+            <Text>{data.time}</Text>
+            <Icon name={data.icon} size={25} style={[{ color: data.color }]} />
+            <Text>{data.degree}</Text>
+          </HourInfoView>
+        );
+      });
+      const HourSectionView = styled.View`flexDirection: row;paddingTop: 10;paddingBottom:10;borderTopWidth: 1;borderBottomWidth: 1;borderColor: #fff;`;
+      return (
+        <ScrollView horizontal={true}>
+          <HourSectionView style={{ flexDirection: 'row' }}>
+            {hours}
+          </HourSectionView>
+        </ScrollView>
+      );
+    };
+    const WeekSection = () => {
+      const weekDay = this.props.data.days.map((dayData, dayIndex) => {
+        const WeekDayView = styled.View`flexDirection: row;height: 50;`;
+        const NameView = styled.View`justifyContent: center; alignItems: flex-start; flex: 1;`;
+        const IconView = styled.View`justifyContent: center; alignItems: center; flex: 1;`;
+        const DegreeView=styled.View`justifyContent: flex-end; alignItems: center; flex: 1; flexDirection: row;`;
+        const DegreeHighText= styled.Text`color: #fff; width: 35; fontSize: 18; textAlign: right`;
+        const DegreeLowText= styled.Text`color: ${dayData.night ? '#eee' : '#aaa'} ; width: 35; fontSize: 18; textAlign: right`;
+        return (
+          <WeekDayView key={dayData.key}>
+            <NameView>
+              <Text>{dayData.day}</Text>
+            </NameView>
+            <IconView>
+              <Icon name={dayData.icon} size={25} style={{ color: '#fff' }}></Icon>
+            </IconView>
+            <DegreeView>
+              <DegreeHighText>{dayData.high}</DegreeHighText>
+              <DegreeLowText>{dayData.low}</DegreeLowText>
+            </DegreeView>
+          </WeekDayView>
+        );
+      });
+      const WeekSectionView=styled.View`paddingLeft: 25; paddingRight: 25`;
+      return (
+        <WeekSectionView>
+          {weekDay}
+        </WeekSectionView>
+      );
+
+    };
+
+    const CityWeatherScrollView = styled.ScrollView`
     backgroundColor: transparent;
     position: absolute;
     left: 0;
@@ -134,125 +177,18 @@ class CityWeather extends Component {
     width: ${Dimensions.get('window').width};
     height: ${Dimensions.get('window').height - 60};
     `;
+    const Text = styled.Text`
+      fontSize: 18;
+      color: #fff;
+    `;
     return (
-      <CityWeather>
+      <CityWeatherScrollView>
         <CitySection />
         <TodaySection />
         <HourSection />
         <WeekSection />
-      </CityWeather>
+      </CityWeatherScrollView>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 18,
-    color: "#fff",
-  },
-  container: {
-    flex: 1,
-    alignItems: "stretch",
-  },
-  cityWeather: {
-    backgroundColor: "transparent",
-    position: "absolute",
-    left: 0,
-    top: 10,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - 60,
-  },
-  citySection: {
-    backgroundColor: "transparent",
-    alignItems: "center",
-  },
-  city: {
-    fontSize: 55,
-    color: "#fff",
-  },
-  abs: {
-    fontSize: 25,
-    color: "#fff",
-  },
-  degree: {
-    fontSize: 85,
-    color: "#fff",
-  },
-  todaySection: {
-    paddingLeft: 25,
-    paddingRight: 25,
-    marginTop: 10,
-    marginBottom: 10,
-    flexDirection: "row",
-  },
-  todayHead: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: 'flex-start',
-  },
-  todayTail: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: 'flex-end',
-  },
-  hourSection: {
-    flexDirection: "row",
-    paddingTop: 25,
-    paddingBottom: 25,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: "#fff",
-  },
-  hourInfo: {
-    width: 60,
-    alignItems: "center"
-  },
-  weekSection: {
-    paddingLeft: 25,
-    paddingRight: 25,
-  },
-  weekDayInfo: {
-    flexDirection: "row",
-    height: 50,
-  },
-  weekDayName: {
-    justifyContent: "center",
-    alignItems: "flex-start",
-    flex: 1,
-  },
-  weekDayIcon: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
-  },
-  weekDayDegree: {
-    justifyContent: "flex-end",
-    alignItems: "center",
-    flex: 1,
-    flexDirection: "row",
-  },
-  weekDaydegreeHigh: {
-    color: "#fff",
-    width: 35,
-    fontSize: 18,
-    textAlign: "right"
-  },
-  weekDayDegreeLow: {
-    color: "#eee",
-    width: 35,
-    fontSize: 18,
-    textAlign: "right"
-  },
-  weekDayDegreeNight: {
-    color: "#aaa",
-    width: 35,
-    fontSize: 18,
-    textAlign: "right"
-  },
-  backBtn: {
-    position: "absolute",
-    right: 25,
-    bottom: 0
-  },
-});
 

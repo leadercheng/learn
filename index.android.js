@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('learn', () => Weather);
+AppRegistry.registerComponent('learn', () =>Weather);
