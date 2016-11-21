@@ -1,5 +1,6 @@
-import React, { Component } from 'React';
+import React, { Component, PropTypes  } from 'React';
 import { View, Text, TextInput, StyleSheet, TouchableHighlight, Image, ActivityIndicator, Dimensions } from 'react-native';
+import SearchResult from './searchResult'
 
 function urlForQueryAndPage(key, value, pageNumber) {
     var data = {
@@ -20,6 +21,11 @@ function urlForQueryAndPage(key, value, pageNumber) {
 };
 
 export default class SearchPage extends Component {
+    static propTypes = {
+        //title: PropTypes.string.isRequired,
+        navigator: PropTypes.object.isRequired,
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -47,11 +53,16 @@ export default class SearchPage extends Component {
                     message: 'Something bad happened ' + error
                 }));
     }
-    
+
     _handleResponse(response) {
         this.setState({ isLoading: false, message: '' });
         if (response.application_response_code.substr(0, 1) === '1') {
-            console.warn('Properties found: ' + response.listings.length);
+            //console.warn('Properties found: ' + response.listings.length);
+            this.props.navigator.push({
+                title: 'Results',
+                component: SearchResult,
+                passProps: { listings: response.listings }
+            });
         } else {
             this.setState({ message: 'Location not recognized; please try again.' });
         }
