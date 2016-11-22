@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Navigator, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, NavigatorIOS } from 'react-native';
 import SearchPage from './searchPage'
 export default class PropertyFinderApp extends Component {
     render() {
-        const routes = [
-            { title: 'Property Finder', index: 0 },
-            { title: 'Hello world', index: 1 },
-        ];
         return (
-            <Navigator style={styles.container} initialRoute={{ title: 'Property Finder', index: 0 }}
-                renderScene={(route, navigator) =>
-                    <SearchPage navigator={navigator} />
-                }
-                />
-       )
+            <NavigatorIOS style={styles.container} initialRoute={{
+                title: 'Property Finder',
+                component: SearchPage,
+            }} />
+
+        )
     }
 }
 
