@@ -1,6 +1,6 @@
 import React, { Component } from 'React';
 import { View, Text, TextInput, StyleSheet, TouchableHighlight, Image, ActivityIndicator, Dimensions } from 'react-native';
-import SearchResults from './searchResults';
+// import SearchResults from './searchResults';
 
 function urlForQueryAndPage(key, value, pageNumber) {
   var data = {
@@ -52,12 +52,13 @@ export default class SearchPage extends Component {
   _handleResponse(response) {
     this.setState({ isLoading: false, message: '' });
     if (response.application_response_code.substr(0, 1) === '1') {
+      this.props.navigator.push({id: 2, data: response.listings});
       //console.warn('Properties found: ' + response.listings.length);
-      this.props.navigator.push({
-        title: 'Results',
-        component: SearchResults,
-        passProps: { listings: response.listings }
-      });
+      // this.props.navigator.push({
+      //   title: 'Results',
+      //   component: SearchResults,
+      //   passProps: { listings: response.listings }
+      // });
     } else {
       this.setState({ message: 'Location not recognized; please try again.' });
     }

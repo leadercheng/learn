@@ -1,15 +1,60 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, NavigatorIOS } from 'react-native';
+import { View, Text, StyleSheet, Navigator, BackAndroid } from 'react-native';
 import SearchPage from './searchPage'
+import SearchResults from './searchResults';
+import PropertyView from './propertyView';
+
+var _navigator;
+
+BackAndroid.addEventListener('hardwareBackPress', () => {
+    if (_navigator && _navigator.getCurrentRoutes().length > 1) {
+        // console.warn('back');
+        _navigator.pop();
+        return true;
+    }
+    return false;
+});
+
 export default class PropertyFinderApp extends Component {
+    // renderIOS() {
+    //     return (
+    //         <NavigatorIOS style={styles.container} initialRoute={{
+    //             title: 'Property Finder',
+    //             component: SearchPage,
+    //         }} />
+    //     )
+    // }
+    navigatorRenderScene = (route, navigator) => {
+        _navigator = navigator;
+        switch (route.id) {
+            case 1:
+                return (<SearchPage navigator={navigator} title="Finder" />);
+            case 2:
+                return (<SearchResults navigator={navigator} title="Result" listings={route.data} />);
+            case 3:
+                return (<PropertyView title="Property" property={route.data} />);
+        }
+    }
+
     render() {
         return (
-            <NavigatorIOS style={styles.container} initialRoute={{
-                title: 'Property Finder',
-                component: SearchPage,
-            }} />
+            <Navigator
+                style={styles.container}
+                initialRoute={{ id: 1 }}
+                renderScene={this.navigatorRenderScene} />
+        );
+    }
 
-        )
+    componentWillUnmount() {
+        console.log('componentWillUnmount');
+        BackAndroid.removeEventListener('hardwareBackPress', () => {
+            if (_navigator && _navigator.getCurrentRoutes().length > 1) {
+                console.log('remove');
+                _navigator.pop();
+                return true;
+            }
+            return false;
+        });
     }
 }
 

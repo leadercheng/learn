@@ -7,7 +7,6 @@ import {
   ListView,
   Text
 } from 'react-native';
-import PropertyView from './propertyView';
 
 export default class SearchResults extends Component {
 
@@ -22,11 +21,13 @@ export default class SearchResults extends Component {
 
   rowPressed(listerURL) {
     var property = this.props.listings.filter(prop => prop.lister_url === listerURL)[0];
-    this.props.navigator.push({
-      title: "Property",
-      component: PropertyView,
-      passProps: { property: property }
-    });
+      this.props.navigator.push({id: 3, data: property});
+
+    // this.props.navigator.push({
+    //   title: "Property",
+    //   component: PropertyView,
+    //   passProps: { property: property }
+    // });
   }
 
   renderRow(rowData, sectionID, rowID) {
@@ -52,6 +53,7 @@ export default class SearchResults extends Component {
 
 
   render() {
+    console.log('SearchResult render');
     return (
       <ListView
         dataSource={this.state.dataSource}
