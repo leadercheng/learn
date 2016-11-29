@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Navigator, BackAndroid } from 'react-native';
-import SearchPage from './searchPage'
-import SearchResults from './searchResults';
+import PropertySearch from './propertySearch'
+import PropertyList from './propertyList';
 import PropertyView from './propertyView';
 
 var _navigator;
@@ -28,9 +28,9 @@ export default class PropertyFinderApp extends Component {
         _navigator = navigator;
         switch (route.id) {
             case 1:
-                return (<SearchPage navigator={navigator} title="Finder" />);
+                return (<PropertySearch navigator={navigator} title="Finder" />);
             case 2:
-                return (<SearchResults navigator={navigator} title="Result" listings={route.data} />);
+                return (<PropertyList navigator={navigator} title="Result" listings={route.data} />);
             case 3:
                 return (<PropertyView title="Property" property={route.data} />);
         }
