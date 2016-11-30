@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, PanResponder } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+var CIRCLE_SIZE = 60;
 export default class MoveCircle extends Component {
 	constructor() {
 		super();
@@ -9,13 +10,29 @@ export default class MoveCircle extends Component {
 		this._previousLeft = 0;
 		this._previousTop = 0;
 		this._circleStyles = {};
-		this.state = {
-			color: "rgba(255,255,255,0.7)",
-		};
+		// this.state = {
+		// 	color: "rgba(255,255,255,0.7)",
+		// };
 	}
 
 	_updateNativeStyles = () => {
 		this.circle && this.circle.setNativeProps(this._circleStyles);
+	}
+
+	_pickBall = () => {
+		// this.setState({
+		// 	color: "grey",
+		// });
+		this._circleStyles.style.backgroundColor = 'grey';
+		this._updateNativeStyles();
+	}
+
+	_dropBall = ()=>{
+		// this.setState({
+		// 	color: "white",
+		// });
+		this._circleStyles.style.backgroundColor = 'white';
+		this._updateNativeStyles();
 	}
 
 	componentWillMount() {
@@ -25,9 +42,10 @@ export default class MoveCircle extends Component {
 			style: {
 				left: this._previousLeft,
 				top: this._previousTop,
-				//backgroundColor: 'green',
+				backgroundColor: 'white',
 			}
 		};
+
 		this._panResponder = PanResponder.create({
 			onStartShouldSetPanResponder: (evt, gestureState) => true,
 			onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
@@ -43,11 +61,7 @@ export default class MoveCircle extends Component {
 				// The guesture has started. Show visual feedback so the user knows
 				// what is happening!
 				// gestureState.d{x,y} will be set to zero now
-				this.setState({
-					color: "white",
-				});
-				//this._circleStyles.style.backgroundColor = 'blue';
-				this._updateNativeStyles();
+				this._pickBall();
 			},
 			onPanResponderMove: (evt, gestureState) => {
 				// The most recent move distance is gestureState.move{X,Y}
@@ -61,10 +75,10 @@ export default class MoveCircle extends Component {
 				// The user has released all touches while this view is the
 				// responder. This typically means a gesture has succeeded
 				//this._circleStyles.style.backgroundColor = 'green';
-				this.setState({
-					color: "rgba(255,255,255,0.7)"
-				});
-				this._updateNativeStyles();
+				// this.setState({
+				// 	color: "rgba(255,255,255,0.7)"
+				// });
+				this._dropBall();
 				this._previousLeft += gestureState.dx;
 				this._previousTop += gestureState.dy;
 			},
@@ -85,8 +99,10 @@ export default class MoveCircle extends Component {
 		return (
 			<View >
 				<Image source={require('../img/agrass.png')} style={styles.bg}></Image>
-				<View ref={(circle) => { this.circle = circle; } } style={styles.Circle} {...this._panResponder.panHandlers}>
-					<Icon name="ios-baseball" color={this.state.color} size={60} />
+				<View ref={(circle) => { this.circle = circle; } } style={styles.CircleContainer} {...this._panResponder.panHandlers}>
+					{
+						// <Icon name="ios-baseball" color={this.state.color} size={80}  />
+					}
 				</View>
 			</View >
 		)
@@ -99,10 +115,16 @@ const styles = StyleSheet.create({
 		resizeMode: "stretch",
 		position: "absolute"
 	},
-	Circle: {
-		backgroundColor: "transparent",
-		position: "absolute",
-		left: 0,
-		right: 0
+	CircleContainer: {
+		width: CIRCLE_SIZE,
+		height: CIRCLE_SIZE,
+		borderRadius: CIRCLE_SIZE / 2,
+		position: 'absolute',
+		// borderColor: "red",
+		// borderWidth: 1,
 	},
+	// Circle: {
+	// 	backgroundColor: "transparent",
+	// 	position: "absolute",
+	// },
 });
