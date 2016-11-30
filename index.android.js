@@ -11,9 +11,9 @@ import {
   Text,
   View
 } from 'react-native';
-// import StopWatch from 'views/stopWatch.js';
-// import Weather from "views/weather";
-// import Entrance from "/views/animated";
+// import StopWatch from './views/stopWatch.js';
+// import Weather from "./views/weather";
+//import Entrance from "./views/animated";
 //import PropertyFind from './views/propertyFinder';
 import MoveCircle from './views/moveCircle';
 
