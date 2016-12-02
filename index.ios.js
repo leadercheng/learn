@@ -12,12 +12,13 @@ import {
   View
 } from 'react-native';
 
-import StopWatch from './stopWatch.js';
-import Weather from "./weather";
-import Entrance from "./animated";
-import PropertyFind from './propertyFinder';
+import StopWatch from './views/stopWatch.js';
+import Weather from "./views/weather";
+import Entrance from "./views/animated";
+import PropertyFind from './views/propertyFinder';
+import MoveCircle from './views/moveCircle';
 
-AppRegistry.registerComponent('learn', () => PropertyFind);
+AppRegistry.registerComponent('learn', () => MoveCircle);
 
 export default class learn extends Component {
   render() {

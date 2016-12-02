@@ -27,7 +27,7 @@ export default class MoveCircle extends Component {
 		this._updateNativeStyles();
 	}
 
-	_dropBall = ()=>{
+	_dropBall = () => {
 		// this.setState({
 		// 	color: "white",
 		// });
@@ -98,7 +98,7 @@ export default class MoveCircle extends Component {
 	render() {
 		return (
 			<View >
-				<Image source={require('../img/agrass.png')} style={styles.bg}></Image>
+				<Image source={require('./img/agrass.png')} style={styles.bg}></Image>
 				<View ref={(circle) => { this.circle = circle; } } style={styles.CircleContainer} {...this._panResponder.panHandlers}>
 					{
 						// <Icon name="ios-baseball" color={this.state.color} size={80}  />
