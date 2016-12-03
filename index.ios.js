@@ -18,7 +18,7 @@ import Entrance from "./views/animated";
 import PropertyFind from './views/propertyFinder';
 import MoveCircle from './views/moveCircle';
 
-AppRegistry.registerComponent('learn', () => PropertyFind);
+AppRegistry.registerComponent('learn', () => MoveCircle);
 
 export default class learn extends Component {
   render() {
