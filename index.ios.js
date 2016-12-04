@@ -17,8 +17,9 @@ import Weather from "./views/weather";
 import Entrance from "./views/animated";
 import PropertyFind from './views/propertyFinder';
 import MoveCircle from './views/moveCircle';
+import SlideMenu from './views/SlideMenu';
 
-AppRegistry.registerComponent('learn', () => MoveCircle);
+AppRegistry.registerComponent('learn', () => SlideMenu);
 
 export default class learn extends Component {
   render() {
