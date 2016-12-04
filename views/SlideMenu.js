@@ -119,10 +119,11 @@ export default class SlideMenu extends Component {
 }
 
 class SideMenu extends Component {
+
 	render() {
 		return (
 			<View style={styles.sideMenuContainer}>
-				<Image source={{ uri: 'map' }} style={styles.img}></Image>
+				<Image width={Dimensions.get('window').width} height={0.7 * Dimensions.get('window').width / 1.754} source={{ uri: 'map' }} style={styles.img}></Image>
 				<View style={styles.btnContainer}>
 					<TouchableHighlight underlayColor="#888" onPress={() => { true } }>
 						<View style={styles.btn}>
