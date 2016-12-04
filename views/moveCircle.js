@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, PanResponder } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-var CIRCLE_SIZE = 60;
+var CIRCLE_SIZE = 80;
 export default class MoveCircle extends Component {
 	constructor() {
 		super();
@@ -10,6 +10,7 @@ export default class MoveCircle extends Component {
 		this._previousLeft = 0;
 		this._previousTop = 0;
 		this._circleStyles = {};
+		this._baseballStyles = {};
 		// this.state = {
 		// 	color: "rgba(255,255,255,0.7)",
 		// };
@@ -17,21 +18,23 @@ export default class MoveCircle extends Component {
 
 	_updateNativeStyles = () => {
 		this.circle && this.circle.setNativeProps(this._circleStyles);
+		this.baseball && this.baseball.setNativeProps(this._baseballStyles);
 	}
 
 	_pickBall = () => {
 		// this.setState({
 		// 	color: "grey",
 		// });
-		this._circleStyles.style.backgroundColor = 'grey';
+		//this._circleStyles.style.backgroundColor = 'grey';
+		this._baseballStyles.style.color = 'grey';
 		this._updateNativeStyles();
 	}
 
-	_dropBall = ()=>{
+	_dropBall = () => {
 		// this.setState({
 		// 	color: "white",
 		// });
-		this._circleStyles.style.backgroundColor = 'white';
+		this._baseballStyles.style.color = 'white';
 		this._updateNativeStyles();
 	}
 
@@ -42,8 +45,14 @@ export default class MoveCircle extends Component {
 			style: {
 				left: this._previousLeft,
 				top: this._previousTop,
-				backgroundColor: 'white',
+				//backgroundColor: 'white',
 			}
+		};
+		this._baseballStyles = {
+			style: {
+				color: 'white',
+			}
+
 		};
 
 		this._panResponder = PanResponder.create({
@@ -89,21 +98,20 @@ export default class MoveCircle extends Component {
 			},
 		});
 	}
-
 	componentDidMount() {
 		this._updateNativeStyles();
 	}
 
 
+
 	render() {
 		return (
 			<View >
-				<Image source={require('../img/agrass.png')} style={styles.bg}></Image>
-				<View ref={(circle) => { this.circle = circle; } } style={styles.CircleContainer} {...this._panResponder.panHandlers}>
-					{
-						// <Icon name="ios-baseball" color={this.state.color} size={80}  />
-					}
-				</View>
+				<Image source={require('./img/agrass.png')} style={styles.bg}>
+					<View ref={(circle) => { this.circle = circle; } } style={styles.CircleContainer} {...this._panResponder.panHandlers}>
+						<Icon name="ios-baseball" size={80} ref={(baseball) => { this.baseball = baseball; } } />
+					</View>
+				</Image>
 			</View >
 		)
 	}
@@ -113,18 +121,16 @@ const styles = StyleSheet.create({
 	bg: {
 		width: Dimensions.get('window').width,
 		resizeMode: "stretch",
-		position: "absolute"
+		// position: "absolute"
 	},
 	CircleContainer: {
-		width: CIRCLE_SIZE,
-		height: CIRCLE_SIZE,
-		borderRadius: CIRCLE_SIZE / 2,
-		position: 'absolute',
+		backgroundColor: "transparent",
+		// width: CIRCLE_SIZE,
+		// height: CIRCLE_SIZE,
+		// borderRadius: CIRCLE_SIZE / 2,
+		//position: 'absolute',
 		// borderColor: "red",
 		// borderWidth: 1,
 	},
-	// Circle: {
-	// 	backgroundColor: "transparent",
-	// 	position: "absolute",
-	// },
+	
 });
