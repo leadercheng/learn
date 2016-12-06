@@ -14,46 +14,29 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default class SlideMenu extends Component {
 	constructor() {
 		super();
-		_previousLeft = -0.7 * Dimensions.get('window').width - 10;
+		_previousLeft = -0.7 * Dimensions.get('window').width + 10;
 		_previousOpacity = 0;
-		_minLeft = -0.7 * Dimensions.get('window').width - 10;
+		_minLeft = -0.7 * Dimensions.get('window').width + 10;
 		_menuStyles = {};
 		this._menuStyles = {
 			style: {
 				left: this._previousLeft,
 			},
 		};
-
-		_dropStyle = {};
-		this._dropStyles = {
-			style: {
-				opacity: this._previousOpacity,
-			},
-		};
-
-		this.state = {
-			showDrop: false,
-		}
 	}
 
 	_updatePosition = () => {
 		this.menu && this.menu.setNativeProps(this._menuStyles);
-		this.drop && this.drop.setNativeProps(this._dropStyles);
 	}
 
 	_endMove(evt, gestureState) {
 		if (gestureState.vx < 0 || gestureState.dx < 0) {
 			this._menuStyles.style.left = this._minLeft;
-			this._dropStyles.style.opacity = 0;
 			this._previousLeft = this._minLeft;
 			this._previousOpacity = 0;
-			this.setState({
-				showDrop: false
-			})
 		}
 		if (gestureState.vx > 0 || gestureState.dx > 0) {
 			this._menuStyles.style.left = 0;
-			this._dropStyles.style.opacity = 1;
 			this._previousLeft = 0;
 			this._previousOpacity = 1;
 		}
@@ -64,32 +47,25 @@ export default class SlideMenu extends Component {
 	componentWillMount() {
 		this._panResponder = PanResponder.create({
 			onStartShouldSetPanResponder: (evt, gestureState) => true,
+			onPanResponderTerminationRequest: (evt, gestureState) => true,
+			onPanResponderGrant: (evt, gestureState) => true,
+			onShouldBlockNativeResponder: (event, gestureState) => true,
 			onMoveShouldSetPanResponder: (evt, gestureState) => {
 				return gestureState.dy / gestureState.dx != 0;
 			},
-			onPanResponderGrant: (evt, gestureState) => {
-				this.setState({
-					showDrop: true
-				})
-			},
+			onPanResponderRelease: (evt, gestureState) => this._endMove(evt, gestureState),
+			onPanResponderTerminate: (evt, gestureState) => this._endMove(evt, gestureState),
 			onPanResponderMove: (evt, gestureState) => {
 				this._menuStyles.style.left = this._previousLeft + gestureState.dx;
-				this._dropStyles.style.opacity = this._previousOpacity + Math.pow(gestureState.dx / (-this._minLeft), 0.5);
 				if (this._menuStyles.style.left > 0) {
 					this._menuStyles.style.left = 0;
-					this._dropStyles.style.opacity = 1;
 				};
 				if (this._menuStyles.style.left < this._minLeft) {
 					this._menuStyles.style.left = this._minLeft;
-					this._dropStyles.style.opacity = 0;
 				};
 				this._updatePosition();
 				LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
 			},
-			onPanResponderTerminationRequest: (evt, gestureState) => true,
-			onPanResponderRelease: (evt, gestureState) => this._endMove(evt, gestureState),
-			onPanResponderTerminate: (evt, gestureState) => this._endMove(evt, gestureState),
-			onShouldBlockNativeResponder: (event, gestureState) => true,
 		});
 	}
 
@@ -98,17 +74,9 @@ export default class SlideMenu extends Component {
 	}
 
 	render() {
-		// <Map mapType="standard" mapStyle={styles.map} showsUserLocation={false} followUserLocation={false}></Map>
-		// 
 		return (
 			<View style={styles.container}>
-				<Image source={require('./img/agrass.png')} style={styles.map} >
-					{
-						this.state.showDrop ?
-							<View style={styles.drop} ref={(drop) => { this.drop = drop; } }></View>
-							:
-							<View></View>
-					}
+				<Image source={require('./img/agrass.png')} >
 					< View style={styles.sideMenu} ref={(menu) => { this.menu = menu; } } {...this._panResponder.panHandlers}>
 						<SideMenu />
 					</View>
@@ -123,9 +91,10 @@ class SideMenu extends Component {
 	render() {
 		return (
 			<View style={styles.sideMenuContainer}>
-				<Image width={Dimensions.get('window').width} height={0.7 * Dimensions.get('window').width / 1.754} source={{ uri: 'map' }} style={styles.img}></Image>
+				<Image source={require('./img/map.png')} style={styles.img}
+					/>
 				<View style={styles.btnContainer}>
-					<TouchableHighlight underlayColor="#888" onPress={() => { true } }>
+					<TouchableHighlight underlayColor="#111" onPress={() => { true } }>
 						<View style={styles.btn}>
 							<Icon style={styles.btnIcon} name="map-marker" size={15}></Icon>
 							<Text style={styles.btnText}>你的地点</Text>
@@ -186,30 +155,17 @@ const styles = StyleSheet.create({
 		height: Dimensions.get('window').height,
 		width: Dimensions.get('window').width,
 	},
-	drop: {
-		height: Dimensions.get('window').height,
-		width: Dimensions.get('window').width,
-		position: "absolute",
-		top: 0,
-		left: 0,
-		opacity: 0,
-		backgroundColor: "rgba(0,0,0,0.6)"
-	},
-	map: {
-		// width: Util.size.width,
-		// height: Util.size.height
-	},
 	sideMenu: {
 		height: Dimensions.get('window').height,
-		width: 0.7 * Dimensions.get('window').width + 20,
-		position: "absolute",
+		width: 0.7 * Dimensions.get('window').width,
+		// position: "absolute",
 		top: 0,
 		backgroundColor: "transparent",
-		left: -0.7 * Dimensions.get('window').width - 10,
+		left: -0.7 * Dimensions.get('window').width + 10,
 	},
 	sideMenuContainer: {
 		height: Dimensions.get('window').height,
-		width: 0.7 * Dimensions.get('window').width + 20,
+		width: 0.7 * Dimensions.get('window').width,
 		backgroundColor: "#fff",
 		shadowColor: "#000",
 		shadowOpacity: 0.3,
@@ -220,27 +176,34 @@ const styles = StyleSheet.create({
 		}
 	},
 	img: {
-		borderWidth: 1,
-		borderColor: 'red',
-		width: Dimensions.get('window').width,
+		// borderWidth: 1,
+		// borderColor: 'red',
+		width: 0.7 * Dimensions.get('window').width,
 		resizeMode: "contain",
 		height: 0.7 * Dimensions.get('window').width / 1.754,
 	},
 	btnContainer: {
 		paddingTop: 10,
-		//borderBottomWidth: Dimensions.get('window').width,
+		borderBottomWidth: 1,
 		borderBottomColor: "#bbb"
 	},
 	btn: {
 		flexDirection: "row",
 		alignItems: "center",
-		paddingTop: 15,
-		paddingBottom: 15,
+		paddingTop: 10,
+		paddingBottom: 10,
 		backgroundColor: "#fff"
 	},
 	btnIcon: {
 		flex: 1,
 		textAlign: "center",
 		color: "#555"
+	},
+	btnText: {
+		flex: 3,
+		fontSize: 14,
+		fontWeight: "500",
+		paddingLeft: 20,
+		color: "#454545"
 	},
 });
